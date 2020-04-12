@@ -1,0 +1,423 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.joba.hadoop</groupId>
+    <artifactId>hadoop-env</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <inceptionYear>2019</inceptionYear>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>tests/hadoop-environment</module>
+        <module>commons</module>
+    </modules>
+
+    <developers>
+        <developer>
+            <name>José Batalheiro</name>
+            <email>batalheiro@outlook.com</email>
+            <timezone>Europe/Berlin</timezone>
+        </developer>
+    </developers>
+
+    <!-- Connection to project repository. -->
+    <scm>
+        <developerConnection>scm:git:https://github.com/josebatalheiro/hadoop-env.git</developerConnection>
+        <!-- Project Github webpage. -->
+        <url>https://github.com/josebatalheiro/hadoop-env/</url>
+        <tag>R${project.version}</tag>
+    </scm>
+
+    <repositories>
+        <repository>
+            <id>hortonworks</id>
+            <url>https://repo.hortonworks.com/content/repositories/releases/</url>
+        </repository>
+        <repository>
+            <id>cloudera</id>
+            <url>https://repository.cloudera.com/artifactory/cloudera-repos/</url>
+        </repository>
+    </repositories>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!-- Java version -->
+        <java.version>1.8</java.version>
+
+        <!-- Scala versions -->
+        <scala.major.version>2.11</scala.major.version>
+        <scala.version>${scala.major.version}.4</scala.version>
+        <scala.scalactic>3.0.0</scala.scalactic>
+        <scala.scalatest>3.0.0</scala.scalatest>
+        <scala.scalamock>4.1.0</scala.scalamock>
+        <scala.scalaj>2.3.0</scala.scalaj>
+
+        <!-- Jackson versions -->
+        <jackson.base.version>2.6.5</jackson.base.version>
+        <lf4j.version>2.9.1</lf4j.version>
+
+        <!-- Hadoop versions -->
+        <kafka.version>2.0.0</kafka.version>
+        <kafka.minor.version>0.10.0-kafka-2.1.0</kafka.minor.version>
+        <hbase.version>2.0.2</hbase.version>
+        <spark.version>2.2.0</spark.version>
+        <hadoop.version>3.1.3</hadoop.version>
+
+
+        <!-- ====== Maven plugins versions ====== -->
+        <maven.compiler.plugin.version>3.3</maven.compiler.plugin.version>
+        <maven.jar.plugin.version>2.6</maven.jar.plugin.version>
+        <maven.assembly.plugin.version>2.6</maven.assembly.plugin.version>
+        <maven.dependency.plugin.version>3.1.1</maven.dependency.plugin.version>
+        <maven.enforcer.plugin.version>1.4.1</maven.enforcer.plugin.version>
+        <maven.war.plugin.version>2.4</maven.war.plugin.version>
+        <maven.shade.plugin.version>3.1.0</maven.shade.plugin.version>
+        <maven.surefire.plugin.version>2.7</maven.surefire.plugin.version>
+        <maven.scalatest.plugin.version>2.0.0</maven.scalatest.plugin.version>
+        <maven.antrun.plugin.version>1.7</maven.antrun.plugin.version>
+        <maven.scala.plugin.version>4.3.1</maven.scala.plugin.version>
+        <maven.release.plugin.version>2.5.3</maven.release.plugin.version>
+        <maven.deploy.plugin.version>2.8.2</maven.deploy.plugin.version>
+        <maven.site.plugin.version>3.8.2</maven.site.plugin.version>
+        <maven.project.reports.plugin>2.2</maven.project.reports.plugin>
+    </properties>
+
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.glassfish</groupId>
+                <artifactId>javax.el</artifactId>
+                <version>3.0.1-b06</version>
+            </dependency>
+
+            <!-- scala -->
+            <dependency>
+                <groupId>org.scala-lang</groupId>
+                <artifactId>scala-library</artifactId>
+                <version>${scala.version}</version>
+            </dependency>
+
+            <!-- Jackson -->
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jackson.base.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.dataformat</groupId>
+                <artifactId>jackson-dataformat-xml</artifactId>
+                <version>${jackson.base.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.dataformat</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>${jackson.base.version}</version>
+            </dependency>
+
+            <!-- Google -->
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>28.0-jre</version>
+            </dependency>
+
+
+            <!-- HTTP -->
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpclient</artifactId>
+                <version>4.5.9</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpclient-win</artifactId>
+                <version>4.4</version>
+            </dependency>
+
+            <!-- Test -->
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>4.12</version>
+            </dependency>
+            <dependency>
+                <groupId>org.scalatest</groupId>
+                <artifactId>scalatest_${scala.major.version}</artifactId>
+                <version>${scala.scalatest}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>net.sf.jsefa</groupId>
+                <artifactId>jsefa</artifactId>
+                <version>1.1.1.RELEASE</version>
+            </dependency>
+
+            <!-- SLF4 dependencies -->
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-api</artifactId>
+                <version>${lf4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-core</artifactId>
+                <version>${lf4j.version}</version>
+            </dependency>
+
+            <!-- Kafka dependencies -->
+            <dependency>
+                <groupId>org.apache.kafka</groupId>
+                <artifactId>kafka_${scala.major.version}</artifactId>
+                <version>${kafka.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.kafka</groupId>
+                <artifactId>kafka-clients</artifactId>
+                <version>${kafka.version}</version>
+            </dependency>
+
+            <!-- Hadoop dependencies -->
+            <dependency>
+                <groupId>org.apache.hadoop</groupId>
+                <artifactId>hadoop-client</artifactId>
+                <version>${hadoop.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>com.google.guava</groupId>
+                        <artifactId>*</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.hadoop</groupId>
+                <artifactId>hadoop-common</artifactId>
+                <version>${hadoop.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.hadoop</groupId>
+                <artifactId>hadoop-auth</artifactId>
+                <version>${hadoop.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.hbase</groupId>
+                <artifactId>hbase-server</artifactId>
+                <version>${hbase.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.apache.hadoop</groupId>
+                        <artifactId>hadoop-auth</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.hbase</groupId>
+                <artifactId>hbase-client</artifactId>
+                <version>${hbase.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.mortbay.jetty</groupId>
+                        <artifactId>jetty</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>javax.servlet</groupId>
+                        <artifactId>jsp-api</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.mortbay.jetty</groupId>
+                        <artifactId>jetty-util</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.hadoop</groupId>
+                        <artifactId>hadoop-auth</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.hbase</groupId>
+                <artifactId>hbase-common</artifactId>
+                <version>${hbase.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.hbase</groupId>
+                <artifactId>hbase-thrift</artifactId>
+                <version>${hbase.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <!-- ================================= Compile phase ==================================== -->
+
+                <!-- Maven compiler plugin (Java) -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${maven.compiler.plugin.version}</version>
+                    <configuration>
+                        <source>${java.version}</source>
+                        <target>${java.version}</target>
+                        <testSource>${java.version}</testSource>
+                        <testTarget>${java.version}</testTarget>
+                    </configuration>
+                </plugin>
+
+                <!-- Maven compiler plugin (Scala) -->
+                <plugin>
+                    <groupId>net.alchim31.maven</groupId>
+                    <artifactId>scala-maven-plugin</artifactId>
+                    <version>${maven.scala.plugin.version}</version>
+                </plugin>
+
+                <!-- Maven plugin for dependency enforcing (reproducible builds) -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-enforcer-plugin</artifactId>
+                    <version>${maven.enforcer.plugin.version}</version>
+                    <configuration>
+                        <rules>
+                            <dependencyConvergence/>
+                        </rules>
+                    </configuration>
+                </plugin>
+
+                <!-- ================================= Test phase ==================================== -->
+
+                <!-- Maven surefire plugin (Disabled) -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${maven.surefire.plugin.version}</version>
+                    <configuration>
+                        <skipTests>false</skipTests>
+                    </configuration>
+                </plugin>
+
+                <!-- Scalatest plugin (Enabled) -->
+                <plugin>
+                    <groupId>org.scalatest</groupId>
+                    <artifactId>scalatest-maven-plugin</artifactId>
+                    <version>${maven.scalatest.plugin.version}</version>
+                    <configuration>
+                        <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
+                        <junitxml>.</junitxml>
+                        <filereports>TestSuite.txt</filereports>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>test</id>
+                            <goals>
+                                <goal>test</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <!-- ================================= Build/Install phase ==================================== -->
+
+                <!-- Maven dependency plugin (Copy all maven dependencies into a target folder) -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <version>${maven.dependency.plugin.version}</version>
+                </plugin>
+
+                <!-- Maven jar plugin (Used to create .jars) -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>${maven.jar.plugin.version}</version>
+                </plugin>
+
+                <!-- Maven shade plugin (Shading dependencies + building uber jars) -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-shade-plugin</artifactId>
+                    <version>${maven.shade.plugin.version}</version>
+                </plugin>
+
+                <!-- Maven war plugin (War build and package) -->
+                <plugin>
+                    <artifactId>maven-war-plugin</artifactId>
+                    <version>${maven.war.plugin.version}</version>
+                    <configuration>
+                        <failOnMissingWebXml>false</failOnMissingWebXml>
+                    </configuration>
+                </plugin>
+
+                <!-- Maven Assembly plugin (Used in aggregator/parent modules to bring all artifacts together) -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-assembly-plugin</artifactId>
+                    <version>${maven.assembly.plugin.version}</version>
+                </plugin>
+
+                <!-- ============================= Documentation Generation ================================ -->
+
+                <!-- Maven Site plugin (Used in Scaladoc generation) -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-site-plugin</artifactId>
+                    <version>${maven.site.plugin.version}</version>
+                    <configuration>
+                        <reporting>
+                            <plugin>
+                                <artifactId>maven-project-info-reports-plugin</artifactId>
+                                <version>${maven.project.reports.plugin}</version>
+                            </plugin>
+                            <plugin>
+                                <groupId>net.alchim31.maven</groupId>
+                                <artifactId>scala-maven-plugin</artifactId>
+                                <version>${maven.scala.plugin.version}</version>
+                                <configuration>
+                                    <jvmArgs>
+                                        <jvmArg>-Xms64m</jvmArg>
+                                        <jvmArg>-Xmx1024m</jvmArg>
+                                    </jvmArgs>
+                                </configuration>
+                            </plugin>
+                        </reporting>
+                    </configuration>
+                </plugin>
+
+                <!-- ============================= "Release" + Deploy phase ============================= -->
+
+                <!-- Maven release plugin (Release VCS management for releases) -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-release-plugin</artifactId>
+                    <version>${maven.release.plugin.version}</version>
+                    <configuration>
+                        <!-- VCS tag format -->
+                        <tagNameFormat>R@{project.version}</tagNameFormat>
+                        <!-- Profile for releases. During release:perform, enable the "parcel" profile -->
+                        <releaseProfiles>parcel</releaseProfiles>
+                        <!-- Uses the version provided in all submodules -->
+                        <autoVersionSubmodules>true</autoVersionSubmodules>
+                    </configuration>
+                </plugin>
+
+                <!-- Maven deploy plugin (DISABLED to use wagon) -->
+                <plugin>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>${maven.deploy.plugin.version}</version>
+                    <configuration>
+                        <!-- Skip the deploy of maven deploy plugin. -->
+                        <!-- Only necessary if we want to upload maven artifacts to a given artifactory server
+                             specified in the distribution management and repository. -->
+                        <skip>true</skip>
+                    </configuration>
+                </plugin>
+
+                <!-- ============================= Utility plugins ============================= -->
+
+                <plugin>
+                    <artifactId>maven-antrun-plugin</artifactId>
+                    <version>${maven.antrun.plugin.version}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+</project>
