@@ -54,7 +54,7 @@
 
         <!-- Jackson versions -->
         <jackson.base.version>2.6.5</jackson.base.version>
-        <lf4j.version>2.9.1</lf4j.version>
+        <lf4j.version>2.16.0</lf4j.version>
 
         <!-- Hadoop versions -->
         <kafka.version>2.0.0</kafka.version>
